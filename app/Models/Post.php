@@ -7,12 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Models\Category;
 
 class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
     use SoftDeletes;
+    protected $filalable = [
+        'user_id',
+        'title',
+        'slug',
+        'body',
+        'image',
+        'published_at',
+        'featured'
+    ];
 
     protected function casts(): array
     {
@@ -24,6 +34,11 @@ class Post extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 
     public function scopePublished($query)
