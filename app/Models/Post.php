@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Category;
 use App\Models\User;
+use Storage;
 
 class Post extends Model
 {
@@ -47,6 +48,13 @@ class Post extends Model
         return $query->where('published_at', '<=', Carbon::now());
     }
 
+    public function scopeWithCategory($query, string $category)
+    {
+        return $query->whereHas('categories', function ($query) {
+            $query->where('slug', $category);
+        });
+    }
+
     public function scopeFeatured($query)
     {
         return $query->where('featured', true);
@@ -60,5 +68,12 @@ class Post extends Model
     {
         $words = str_word_count($this->body);
         return ceil($words / 250) < 1 ? 1 : ceil($words / 250);
+    }
+
+    public function getThumbnailImage()
+    {
+        $isUrl = str_contains($this->image, 'http');
+
+        return $isUrl ? $this->image : Storage::disk('public')->url($this->image);
     }
 }
