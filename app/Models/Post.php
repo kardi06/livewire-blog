@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Category;
+use App\Models\User;
 
 class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
     use SoftDeletes;
-    protected $filalable = [
+    protected $fillable = [
         'user_id',
         'title',
         'slug',

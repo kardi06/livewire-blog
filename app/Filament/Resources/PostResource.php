@@ -17,6 +17,9 @@ use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\CheckboxColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
@@ -35,7 +38,7 @@ class PostResource extends Resource
                     TextInput::make('title')
                         ->live()
                         ->required()->minLength(1)->maxLength(150)
-                        ->afterStateUpdated(function (string $operation, $state, Form\Set $set){
+                        ->afterStateUpdated(function (string $operation, $state, Forms\Set $set){
                             if($operation !== 'create') return;
                             $set('slug', Str::slug($state));
                         }),
@@ -65,7 +68,12 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                //
+                ImageColumn::make('image'),
+                TextColumn::make('title')->sortable()->searchable(),
+                TextColumn::make('slug')->sortable()->searchable(),
+                TextColumn::make('author.name')->sortable()->searchable(),
+                TextColumn::make('published_at')->date('Y-m-d')->sortable()->searchable(),
+                CheckboxColumn::make('featured'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

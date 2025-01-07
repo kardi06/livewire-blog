@@ -29,7 +29,7 @@ class CategoryResource extends Resource
                 TextInput::make('title')
                     ->live()
                     ->required()->minLength(1)->maxLength(150)
-                    ->afterStateUpdated(function (string $operation, $state, Form\Set $set){
+                    ->afterStateUpdated(function (string $operation, $state, Forms\Set $set){
                         if($operation !== 'create') return;
                         $set('slug', Str::slug($state));
                     }),
