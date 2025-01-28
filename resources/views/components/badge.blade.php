@@ -8,8 +8,16 @@
         'yellow' => 'text-yellow-800',
         default => 'text-gray-800',
     };
+
+    $bgColor = match ($bgColor) {
+        'gray' => 'bg-gray-100',
+        'blue' => 'bg-blue-100',
+        'red' => 'bg-red-100',
+        'yellow' => 'bg-yellow-100',
+        default => 'bg-gray-100',
+    };
 @endphp
 
-<a href="#" class="bg-red-600 text-white rounded-xl px-3 py-1 text-base">
+<button {{$attributes}} class="{{ $textColor }} {{ $bgColor }} rounded-xl px-3 py-1 text-base">
     {{$slot}}
-</a> 
+</button> 

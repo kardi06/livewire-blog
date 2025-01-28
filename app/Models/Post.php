@@ -50,7 +50,7 @@ class Post extends Model
 
     public function scopeWithCategory($query, string $category)
     {
-        return $query->whereHas('categories', function ($query) {
+        return $query->whereHas('categories', function ($query) use ($category) {
             $query->where('slug', $category);
         });
     }
